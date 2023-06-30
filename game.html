@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Tic Tac Toe</title>
+		<style>
+		</style>
+	</head>
+		<style>
+			body {background-color: aliceblue;}
+			.row div {
+				padding: 10px;
+				border: 1px solid black;
+				height: 10px;
+				width: 10px;
+				float: left;
+			}
+			.row {
+				clear: both;
+			}
+			.column {
+				text-align:center; 
+				color:goldenrod;
+			}
+			.columnsilver {
+				text-align:center; 
+				color:silver;
+			}
+		</style>
+
+	<body>
+		Click to play Tic Tac Toe.<br></br>
+		<div>
+			<div class="row">
+				<h3 class="column"><div id="0_0" onclick="place(this)"></div></h3>
+				<h3 class="columnsilver"><div id="1_0" onclick="place(this)"></div></h3>
+				<h3 class="column"><div id="2_0" onclick="place(this)"></div></h3>
+			</div>
+			<div class="row">
+				<h3 class="columnsilver"><div id="0_1" onclick="place(this)"></div></h3>
+				<h3 class="column"><div id="1_1"onclick="place(this)"></div></h3>
+				<h3 style="text-align:center; color:silver;"><div id="2_1"onclick="place(this)"></div></h3>
+			</div>
+			<div class="row">
+				<h3 class="column"><div id="0_2" onclick="place(this)"></div></h3>
+				<h3 class="columnsilver"><div id="1_2"onclick="place(this)"></div></h3>
+				<h3 class="column"><div id="2_2"onclick="place(this)"></div></h3>
+			</div>
+		</div>
+		<script>
+			let currentPlayer = "O";
+			let computerPlayer = "X";
+			let won = false;
+
+			function isGameOver() {
+				for (let i = 0; i < 3; i++) {
+					for (let j = 0; j < 3; j++) {
+						if (document.getElementById(i.toString() + "_" + j.toString()).innerText == "") {
+							return false;
+						}
+					}
+				}
+				return true;
+			}
+
+			function getComputerStep() {
+				let a = 0; 
+				let b = 0; 
+
+				while (true) {
+					a = Math.floor(Math.random() * 3);
+					b = Math.floor(Math.random() * 3);
+
+					// check if this step is already taken
+					const step = document.getElementById(a.toString() + "_" + b.toString()).innerText
+					if  (step == "" ) {
+						break;
+					}
+
+					if (isGameOver()) {
+						checkGameBoard();
+						if (!won) {
+							alert ("Draw");
+						}
+						break;
+					}
+				}
+
+				return [a.toString(), b.toString()];
+			}
+
+			function place (box) {
+				if (box.innerText != "" || won) 
+					return;
+
+				box.innerText = currentPlayer;
+				let id = getComputerStep();
+				document.getElementById(id[0] + "_" + id[1]).innerText = computerPlayer;
+
+				checkGameBoard();
+			}
+
+			// comment
+			function checkGameBoard() {
+				for (var i = 0; i <= 2; i = i+1) {
+					checkWinner(document.getElementById(i + "_0").innerText, document.getElementById(i + "_1").innerText, document.getElementById(i + "_2").innerText);
+					checkWinner(document.getElementById("0_" + i).innerText, document.getElementById("1_" + i).innerText, document.getElementById("2_" + i).innerText);
+				}
+				checkWinner(document.getElementById("0_0").innerText, document.getElementById("1_1").innerText, document.getElementById("2_2").innerText);
+				checkWinner(document.getElementById("0_2").innerText, document.getElementById("1_1").innerText, document.getElementById("2_0").innerText);
+			}
+
+			function checkWinner(first, second, third) {
+				if (first !="" && first == second && first == third){
+					alert("Winner!");
+					won = true;
+				}
+			}
+		</script>
+
+	</body>	
+</html>
